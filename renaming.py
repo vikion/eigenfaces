@@ -1,4 +1,5 @@
 import os
+import csv
 
 def changeFileName(name):
     name = name.split(" ")
@@ -32,14 +33,44 @@ def changeFileName(name):
     s = s.replace("ä", "a")
     return s
 
-folders = ['AIN', 'AIN extra', 'hip', 'INF', 'KAFZM', 'MAT', 'KEF', 'KJFB', 'KTF']
-for faculty in folders:
-	path = faculty + "/"
-	for filename in os.listdir(path):
-		source = filename
-		newName = changeFileName(filename)
-		dest = path + faculty + "_" + newName
-		source = path + filename
+def rename():
+    folders = ['AIN', 'AIN extra', 'hip', 'INF', 'KAFZM', 'MAT', 'KEF', 'KJFB', 'KTF']
+    for faculty in folders:
+        path = faculty + "/"
+        for filename in os.listdir(path):
+            newName = changeFileName(filename)
+            dest = "photos/" + faculty + "_" + newName
+            source = path + filename
 
-		os.rename(source, dest)
+            os.rename(source, dest)
 
+def turany():
+    with open("kdmfi-kjp-ktvs-turany/photos.csv", 'r') as file:
+        csvreader = csv.reader(file)
+        dict = {}
+        for row in csvreader:
+            katedra = "None"
+            if row[1] == 'katedra-didaktiky-matematiky-fyziky-a-informatiky':
+                katedra = "KDMFI"
+            elif row[1] == 'katedra-jazykovej-pripravy':
+                katedra = "KJP"
+            elif row[1] == 'katedra-telesnej-vychovy-a-sportu':
+                katedra = "KTVS"
+            elif row[1] == 'detasovane-pracovisko-turany':
+                katedra = 'TURANY'
+
+            dict[row[0]] = katedra
+        print(dict)
+
+    path = 'kdmfi-kjp-ktvs-turany/photos/'
+    for filename in os.listdir(path):
+
+        newName = changeFileName(filename)
+        dest = "photos/" + dict[filename] + "_" + newName
+        source = path + filename
+
+        os.rename(source, dest)
+
+
+rename()
+turany()
