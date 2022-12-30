@@ -1,4 +1,6 @@
 # code based on: https://datahacker.rs/010-how-to-align-faces-with-opencv-in-python/
+import glob
+import os
 
 import cv2
 import numpy as np
@@ -18,14 +20,16 @@ class Face:
 
     def rotate(self):
         cropped_face = self.img
-        face = self.face
+        face = self.bbox_face
 
-        if self.left_eye is None or self.right_eye is None:
+
+        # todo
+        if self.eyes['left'] is None or self.eyes['right'] is None:
             self.M = None
             return
 
-        left_eye_x, left_eye_y = self.left_eye
-        right_eye_x, right_eye_y = self.right_eye
+        left_eye_x, left_eye_y = self.eyes['left']
+        right_eye_x, right_eye_y = self.eyes['right']
 
         if left_eye_y > right_eye_y:
             A = right_eye_x, left_eye_y
@@ -46,7 +50,14 @@ class Face:
         M = cv2.getRotationMatrix2D(center, angle, 1.0)
 
         rotated = cv2.warpAffine(cropped_face, M, (w, h))
-        face_rotated = [center[0] - face[2] // 2, center[1] - face[3] // 2, face[2], face[3]]
+        #face_rotated = [center[0] - face[2] // 2, center[1] - face[3] // 2, face[2], face[3]]
+
+        # detect face in rotated picture
+        grayscale = cv2.cvtColor(rotated, cv2.COLOR_BGR2GRAY)
+        plt.imshow(grayscale)
+        plt.show()
+        faces = FaceAlign.face_cascade.detectMultiScale(grayscale, 1.1, 4)
+        face_rotated = max(faces, key=lambda contour: contour[2] * contour[3])
 
         x, y, w, h = face_rotated
         self.face = face_rotated
@@ -56,14 +67,13 @@ class Face:
         # adjust features to the rotation
 
         if self.M is None:
-            cv2.imwrite(fn, self.img)
             return
 
         face_rotated = self.face
         M = self.M
-        scaling_factor = self.scaling_factor
-        left_eye_center = self.left_eye
-        right_eye_center = self.right_eye
+        scaling_factor = 1.5 # self.scaling_factor
+        left_eye_center = self.eyes['left']
+        right_eye_center = self.eyes['right']
         rotated = self.img
 
         x, y, w, h = face_rotated
@@ -77,33 +87,48 @@ class Face:
         #cv2.circle(rotated, rotated_left, 5, (200, 200, 200), 10)
         #cv2.circle(rotated, rotated_right, 5, (200, 199, 199), 10)
 
+
         center_x = (rotated_left[0] + rotated_right[0]) // 2
         center_y = y + h // 2
+
+        centered_face = [center_x - w // 2, center_y - h // 2, w, h ]
+        self.bbox_face = centered_face
         #cv2.circle(rotated, np.array([center_x, center_y]), 5, (50, 200, 50), 10)
 
 class FaceAlign:
 
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
+    glasses_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye_tree_eyeglasses.xml")
 
     def __init__(self, img_path, aspect_ratio=1.25, dpi=400):
         self.scaling_factor = 1.5
         self.ratio = aspect_ratio
-    def process(self, path / Face):
-        self. -> Face
-        Face -> self.
-        face = imread()
-        self.crop_head(face)
+    def process(self, face):
+        if not self.crop_head(face):
+            cv2.imwrite("./zle/" + face.filename, face.img_original)
+            return face.img
+        if not self.detect_features(face):
+            cv2.imwrite("./zle/" + face.filename, face.img_original)
         face.rotate()
+        self.crop(face)
+        return face.img
 
-        return cropped_face
     def crop_head(self, face):
-
         grayscale = cv2.cvtColor(face.img, cv2.COLOR_BGR2GRAY)
         boxes = FaceAlign.face_cascade.detectMultiScale(grayscale, 1.1, 4)
-        box = max(boxes, key=lambda contour: contour[2] * contour[3])
+        for box in boxes:
+            x, y, w, h = box
+            #cv2.rectangle(face.img, (x, y), (x + w, y + h), (0, 255, 0), 3)
+        print(boxes)
+        if not len(boxes):
 
+            return False
+        box = max(boxes, key=lambda contour: contour[2] * contour[3])
         x, y, w, h = box
+
+        #cv2.rectangle(face.img, (x, y), (x + w, y + h), (0, 0, 200), 3)
+
         center_x, center_y = x + w // 2, y + h // 2
 
         W = int(w * self.scaling_factor)
@@ -122,6 +147,8 @@ class FaceAlign:
         face.img = cropped_face
         face.bbox_face = box
 
+        return True
+
 
     def detect_features(self, face):
         x, y, w, h = face.bbox_face
@@ -129,15 +156,26 @@ class FaceAlign:
         grayscale = cv2.cvtColor(cropped_face, cv2.COLOR_BGR2GRAY)
         roi_gray = grayscale[y:(y + h), x:(x + w)]
         roi_color = cropped_face[y:(y + h), x:(x + w)]
+
         # detect eyes
         eyes = FaceAlign.eye_cascade.detectMultiScale(roi_gray, 1.1, 4)
         # select contours that are located in the upper half of the face
         eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if ey < (h // 2)]
+
+        if len(eyes) < 2:
+            eyes = FaceAlign.glasses_cascade.detectMultiScale(roi_gray, 1.1, 4)
+            # select contours that are located in the upper half of the face
+            eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if ey < (h // 2)]
+
+        # TODO
         if len(eyes) < 2:
             face.left_eye = None
             face.right_eye = None
-            return
+            return False
 
+        for eye in eyes:
+            x, y, w, h = eye
+            #cv2.rectangle(roi_color, (x, y), (x + w, y + h), (255, 0, 0), 3)
 
         # select the two largest contours
         eyes = sorted(eyes, key=lambda contour: contour[2] * contour[3])[-2:]
@@ -149,41 +187,53 @@ class FaceAlign:
         face.eyes['left'] = left_eye_center
         face.eyes['right'] = right_eye_center
 
+        return True
 
 
-    def crop(self):
+    def crop(self, face):
 
         ratio = 1.125   # TODO should be object attribute
 
+        x, y, w, h = face.bbox_face
         # TODO maybe we'll want to scale-down width instead of scale-up height
-        w = w
-        h = int(ratio * w)
+        new_w = w
+        new_h = int(ratio * w)
 
-        centered_resized_face = (center_x - w // 2, center_y - h // 2, w, h)
-        x, y, w, h = centered_resized_face
+        center_x, center_y = x + w//2, y + h//2
+        resized_face = [center_x - new_w //2 , center_y - new_h //2, new_w, new_h]
+        x, y, w, h = resized_face
 
-        #cv2.rectangle(rotated, (x, y), (x + w, y + h), (200, 15, 250), 3)
-        plt.imshow(rotated)
-        plt.show()
 
+        # TODO should be object attribute
         w_px = 120
         h_px = int(w_px*ratio)
 
-        cropped = rotated[y:y+h, x:x+w]
+
+        cropped = face.img[y:y+h, x:x+w]
+        print(resized_face)
+        #plt.imshow(face.img)
+        #plt.imshow(cropped)
+        #plt.show()
+        #plt.imshow(cropped)
         resized = cv2.resize(cropped, (w_px, h_px))
 
-        return resized
+        face.bbox_face = resized_face
+        face.img = resized
 
 
 if __name__ == "__main__":
-    test_pictures = ["./kdmfi-kjp-ktvs-turany/photos/leginusova1-ktvs.jpg",
-                     "./AIN extra/Frantisek Gyarfas.jpg"]
-    for path in test_pictures:
-        fn = path.split('/')[-1].strip(".jpg")
-        print(fn)
-        fa = FaceAlign(path)
-        fa.crop_head()
-        fa.detect_features()
-        fa.rotate()
-        fa.crop()
+    test_pictures = ["./photos/KTVS_leginusova1-ktvs.jpg",
+                     "./photos/AIN extra_Frantisek Gyarfas.jpg"]
+    test_pictures = glob.glob(f"./photos/*")
+    align = FaceAlign(...)
+    DIR = "./photos/"
+    test_pictures = os.listdir(DIR)
+    for f in test_pictures:
+
+        filename = f.strip('.jpg')
+        print(filename, f)
+        path = DIR + f
+        face = Face(path)
+        img = align.process(face)
+        cv2.imwrite(f"./photos_aligned/{filename}_align.jpg", img)
 
