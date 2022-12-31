@@ -60,6 +60,7 @@ class FaceAlign:
         self.scaling_factor = 1.5
         self.resize_width = resize_w
         self.resize_height = resize_h
+        self.debug = False
 
     def process(self, face):
         self.crop_head(face)
@@ -85,12 +86,10 @@ class FaceAlign:
         grayscale = cv2.cvtColor(face.img, cv2.COLOR_BGR2GRAY)
         boxes = FaceAlign.face_cascade.detectMultiScale(grayscale, 1.1, 4)
 
-        # debug
-        # for box in boxes:
-        #    x, y, w, h = box
-        #    cv2.rectangle(face.img, (x, y), (x + w, y + h), (0, 255, 0), 3)
-        # plt.imshow(face.img)
-        # plt.show()
+        for box in boxes:
+            x, y, w, h = box
+            cv2.rectangle(face.img, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
 
         if not len(boxes):
             return
@@ -99,7 +98,7 @@ class FaceAlign:
         x, y, w, h = box
 
         # debug
-        # cv2.rectangle(face.img, (x, y), (x + w, y + h), (0, 0, 200), 3)
+        cv2.rectangle(face.img, (x, y), (x + w, y + h), (0, 0, 200), 3)
 
         center_x, center_y = x + w // 2, y + h // 2
         W = int(w * self.scaling_factor)
@@ -111,19 +110,41 @@ class FaceAlign:
         buffer_img = cv2.copyMakeBorder(face.img, buffer_size, buffer_size, buffer_size, buffer_size,
                                         cv2.BORDER_CONSTANT, value=0)
 
+        buffer_img_orig = cv2.copyMakeBorder(face.img_original, buffer_size, buffer_size, buffer_size, buffer_size,
+                                        cv2.BORDER_CONSTANT, value=0)
+
         X += buffer_size
         Y += buffer_size
         cropped_face = buffer_img[Y:Y + H, X:X + W]
-        plt.imshow(cropped_face)
-        plt.show()
+        cropped_face_orig = buffer_img_orig[Y:Y + H, X:X + W]
+        #plt.imshow(cropped_face)
+        #plt.show()
         box[0] = (W - w) // 2
         box[1] = (H - h) // 2
 
         face.img = cropped_face
+        face.img_original = cropped_face_orig
+
         face.bbox_face = box
 
     def detect_features(self, face):
+        def filter_duplicates(eyes):
+            outer = []
+            for eye1 in eyes:
+                for eye2 in eyes:
+                    if eye1 == eye2:
+                        continue
+                    if (eye1[0] <= eye2[0] and eye1[1] <= eye2[1] and
+                            (eye1[0] + eye1[2]) >= (eye2[0] + eye2[2]) and (eye1[1] + eye1[3]) >= (eye2[1] + eye2[3])):
+                        outer.append(eye1)
+            for eye in outer:
+                if eye in eyes:
+                    eyes.remove(eye)
+            return eyes
+        image = face.img.copy()
+
         grayscale = cv2.cvtColor(face.img, cv2.COLOR_BGR2GRAY)
+
         x, y, w, h = face.bbox_face
         roi_gray = grayscale[y:(y + h), x:(x + w)]
 
@@ -132,39 +153,81 @@ class FaceAlign:
         eyes = FaceAlign.eye_cascade.detectMultiScale(roi_gray, 1.05, 4)
 
         # TODO alternative detection with "confidence"
-        eyes3, rejectLevels, levelWeights = FaceAlign.eye_cascade.detectMultiScale3(roi_gray, scaleFactor=1.05, minNeighbors=4,
+        eyes3, rejectLevels, levelWeights = FaceAlign.eye_cascade.detectMultiScale3(roi_gray, scaleFactor=1.05, minNeighbors=5,
                                                                           outputRejectLevels=1)
         eyes = eyes3
 
         # select contours that are located in the upper half of the face
         eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if (h / 2) > (ey + eh/2) > (h / 5)]
-        # TODO delete duplicates (eye in eye)
 
-        # if len(eyes) < 2:
-        #    eyes = FaceAlign.glasses_cascade.detectMultiScale(roi_gray, 1.1, 4)
-        # select contours that are located in the upper half of the face
-        #    eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if ey < (h // 2)]
+        #grayscale = cv2.GaussianBlur(grayscale, (5,5), 0)
+        #roi_gray = grayscale[y:(y + h), x:(x + w)]
 
+        eyes = filter_duplicates(eyes)
         if len(eyes) < 2:
+            eyes3, rejectLevels, levelWeights = FaceAlign.eye_cascade.detectMultiScale3(roi_gray, scaleFactor=1.015,
+                                                                                        minNeighbors=3,
+                                                                                        minSize=[5, 5],
+                                                                                        outputRejectLevels=1)
+            eyes = eyes3
+            eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if (h / 2) > (ey + eh / 2) > (h / 5)]
+
+        eyes = filter_duplicates(eyes)
+        if len(eyes) < 2:
+            grayscale = cv2.GaussianBlur(grayscale, (3, 3), 0)
+            roi_gray = grayscale[y:(y + h), x:(x + w)]
+            eyes3, rejectLevels, levelWeights = FaceAlign.eye_cascade.detectMultiScale3(roi_gray, scaleFactor=1.004,
+                                                                                        minNeighbors=2,
+                                                                                        minSize=[1, 1],
+                                                                                        outputRejectLevels=1)
+            eyes = eyes3
+            eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if (h / 2) > (ey + eh / 2) > (h / 5)]
+
+        eyes = filter_duplicates(eyes)
+        if len(eyes) < 2:
+            face.img = face.img_original
             return
+
 
         # debug
         roi_color = face.img[y:(y + h), x:(x + w)]
         for eye in eyes:
             xe, ye, we, he = eye
-            cv2.rectangle(roi_color, (xe, ye), (xe + we, ye + he), (255, 0, 0), 3)
+            #cv2.rectangle(roi_color, (xe, ye), (xe + we, ye + he), (255, 0, 0), 3)
         #plt.imshow(face.img)
         #plt.show()
+        #print(eyes)
 
-        # TODO selection by area
-        # eyes = sorted(eyes, key=lambda contour: contour[2] * contour[3])[-2:]
+
+
+
+        #  selection with optimal d(eye1, eye2) approx. eq. face_size * r
+        expected_eye_dist = w / 2.5
+        pair = None
+        error = 1e5
+        for eye1 in eyes:
+            for eye2 in eyes:
+                if eye1 == eye2:
+                    continue
+                c1 = np.array([eye1[0] + eye1[2], eye1[1] + eye1[3]])
+                c2 = np.array([eye2[0] + eye2[2], eye2[1] + eye2[3]])
+                d = np.linalg.norm(c1 - c2)
+                err = (expected_eye_dist - d)**2 + ((eye1[1] - eye2[1])/h)**2 #  (eye1[2] - eye2[2])**2 +
+                if err < error or pair is None:
+                    pair = [eye1, eye2]
+                    error = err
+
+        left_eye, right_eye = pair if pair[0][0] < pair[1][0] else pair[::-1]
+
+        #  selection by area
+        #eyes = sorted(eyes, key=lambda contour: contour[2] * contour[3])[-2:]
+        #left_eye, right_eye = eyes if eyes[0][0] < eyes[1][0] else eyes[::-1]
+
+        #  selection by confidence
+        eyes = [eye for _, eye in sorted(zip(levelWeights, eyes))][-2:]
         # left_eye, right_eye = eyes if eyes[0][0] < eyes[1][0] else eyes[::-1]
 
-        # TODO selection by confidence
-        eyes = [eye for _, eye in sorted(zip(levelWeights, eyes))][-2:]
-        left_eye, right_eye = eyes if eyes[0][0] < eyes[1][0] else eyes[::-1]
-
-        # TODO selection by estimate
+        #  selection by estimate
         #im_w = face.img.shape[0]
         #f_w = w
         #shift = np.array([1, 1]) * (im_w - f_w) / 2
@@ -181,7 +244,7 @@ class FaceAlign:
         # debug
         for eye in [left_eye, right_eye]:
             xe, ye, we, he = eye
-            cv2.rectangle(roi_color, (xe, ye), (xe + we, ye + he), (5, 155, 180), 3)
+            #cv2.rectangle(roi_color, (xe, ye), (xe + we, ye + he), (5, 155, 180), 3)
         #plt.imshow(face.img)
         #plt.show()
 
@@ -192,9 +255,11 @@ class FaceAlign:
         face.eyes['left'] = left_eye_center
         face.eyes['right'] = right_eye_center
 
+        face.img = face.img_original
+
     def center_crop(self, face):
-        # try to detect face, if detected and eyes in detected: rewrite  -- (only if the img could be/was rotated)
-        # else keep "old" face: centered in img center with old dims
+
+        '''
         if face.eyes['left'] is not None and face.eyes['right'] is not None:
             grayscale = cv2.cvtColor(face.img, cv2.COLOR_BGR2GRAY)
             boxes = FaceAlign.face_cascade.detectMultiScale(grayscale, 1.1, 4)
@@ -210,9 +275,10 @@ class FaceAlign:
             if len(boxes):
                 box = max(boxes, key=lambda contour: contour[2] * contour[3])
                 face.bbox_face = box
+        '''
 
         new_width = int(face.bbox_face[2] * self.resize_width)
-        new_height = int(face.bbox_face[3] * self.resize_height)
+        new_height = int(new_width * self.resize_height)
 
         if face.eyes['left'] is not None and face.eyes['right'] is not None:
             # adjust features to the rotation
@@ -222,6 +288,7 @@ class FaceAlign:
             # to keep width from face detection comment out next 3 lines
             e_prop_w = 2.125    # TODO should be object attribute
             new_width = int(abs(right_x - left_x) * e_prop_w)
+
             new_height = int(new_width * self.resize_height)
 
             eyes_y = face.eyes['left'][1]  # W.L.O.G left == right  (hopefully)
@@ -252,11 +319,11 @@ if __name__ == "__main__":
     align = FaceAlign()
     DIR = "./photos/"
     test_pictures = os.listdir(DIR)
-    # test_pictures = ['MAT_kollar53.jpg']
+    #test_pictures = ['MAT_kubacek1.jpg']
     for f in test_pictures:
         filename = f.strip('.jpg')
         print(filename, f)
         path = DIR + f
         face = Face(path)
         img = align.process(face)
-        cv2.imwrite(f"./photos_aligned/run05all_loweyes/{filename}_align.jpg", img)
+        cv2.imwrite(f"./photos_aligned/run_3layers_lastblurred33/{filename}_align.jpg", img)
