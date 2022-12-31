@@ -1,8 +1,7 @@
 # code based on: https://datahacker.rs/010-how-to-align-faces-with-opencv-in-python/
 
 #  eyes 0.4 of face height
-#     estimate based on: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/ and physical ruler)
-
+#     estimate based on: https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/ and physical ruler
 
 import os
 import cv2
@@ -183,8 +182,8 @@ class FaceAlign:
         for eye in [left_eye, right_eye]:
             xe, ye, we, he = eye
             cv2.rectangle(roi_color, (xe, ye), (xe + we, ye + he), (5, 155, 180), 3)
-        plt.imshow(face.img)
-        plt.show()
+        #plt.imshow(face.img)
+        #plt.show()
 
         # get the centers of eyes
         left_eye_center = (left_eye[0] + left_eye[2] // 2, left_eye[1] + left_eye[3] // 2)
