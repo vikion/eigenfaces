@@ -137,7 +137,7 @@ class FaceAlign:
         eyes = eyes3
 
         # select contours that are located in the upper half of the face
-        eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if ey < (h // 2)]
+        eyes = [(ex, ey, ew, eh) for (ex, ey, ew, eh) in eyes if (h / 2) > (ey + eh/2) > (h / 5)]
         # TODO delete duplicates (eye in eye)
 
         # if len(eyes) < 2:
@@ -220,12 +220,12 @@ class FaceAlign:
             center_x = (left_x + right_x) // 2
 
             # to keep width from face detection comment out next 3 lines
-            e_prop_w = 2.125
+            e_prop_w = 2.125    # TODO should be object attribute
             new_width = int(abs(right_x - left_x) * e_prop_w)
             new_height = int(new_width * self.resize_height)
 
             eyes_y = face.eyes['left'][1]  # W.L.O.G left == right  (hopefully)
-            e_prop_h = 0.4
+            e_prop_h = 0.4     # TODO should be object attribute
             center_y = eyes_y + new_height * (1 / 2 - e_prop_h)
         else:
             x, y, w, h = face.bbox_face
@@ -259,4 +259,4 @@ if __name__ == "__main__":
         path = DIR + f
         face = Face(path)
         img = align.process(face)
-        cv2.imwrite(f"./photos_aligned/run05all/{filename}_align.jpg", img)
+        cv2.imwrite(f"./photos_aligned/run05all_loweyes/{filename}_align.jpg", img)
