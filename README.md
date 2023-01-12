@@ -43,4 +43,4 @@ Andrej Zelinka
 
 ## Zdroje
 
-* todo
+* [Eyes Alignment](https://datahacker.rs/010-how-to-align-faces-with-opencv-in-python/)
