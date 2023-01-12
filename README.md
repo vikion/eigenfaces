@@ -14,7 +14,7 @@ todo
 
 ### Predspracovanie
 
-* Používame knižnicu **OpenCV** v Pythone
+* Používame knižnicu [OpenCV](https://github.com/opencv/opencv) v Pythone
 * Triedy **`Face`**, **`FaceAlign`**
 * Metódy `crop_head`, `detect_features`, `rotate`, `center_crop`, `process`
 
@@ -35,10 +35,10 @@ todo
 
 ## Autori
 
-Michal Dokupil
-Marián Kravec
-Viktória Ondrejová
-Pavlína Ružičková
+Michal Dokupil  
+Marián Kravec  
+Viktória Ondrejová  
+Pavlína Ružičková  
 Andrej Zelinka
 
 ## Zdroje
