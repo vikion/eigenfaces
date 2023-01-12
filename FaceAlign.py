@@ -1,5 +1,3 @@
-# eyes alignment code based on: https://datahacker.rs/010-how-to-align-faces-with-opencv-in-python/
-
 import os
 import cv2
 import numpy as np
