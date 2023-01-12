@@ -234,7 +234,7 @@ class FaceAlign:
 
             new_height = int(new_width * self.resize_height)
 
-            eyes_y = face.eyes['left'][1]  # W.L.O.G left == right  (hopefully)
+            eyes_y = face.eyes['left'][1]
             e_prop_h = self.eyes2height
             center_y = eyes_y + new_height * (1 / 2 - e_prop_h)
         else:
