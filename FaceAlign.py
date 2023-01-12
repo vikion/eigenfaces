@@ -228,10 +228,8 @@ class FaceAlign:
             left_x, right_x = face.eyes['left'][0], face.eyes['right'][0]
             center_x = (left_x + right_x) // 2
 
-            # to keep width from face detection comment out next 3 lines
             e_prop_w = self.eyes2width
             new_width = int(abs(right_x - left_x) * e_prop_w)
-
             new_height = int(new_width * self.resize_height)
 
             eyes_y = face.eyes['left'][1]
