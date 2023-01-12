@@ -1,18 +1,18 @@
-#Projekt Eigenfaces
+# Projekt Eigenfaces
 
 todo description
 
-##Špecifikácie otázok
+## Špecifikácie otázok
 
 todo
 
-##Popis riešenia
+## Popis riešenia
 
-###Načítanie dát
+### Načítanie dát
 
 todo
 
-###Predspracovanie
+### Predspracovanie
 
 * Používame knižnicu **OpenCV** v Pythone
 * Triedy **`Face`**, **`FaceAlign`**
@@ -25,15 +25,15 @@ Nasledovne sme detekovali oči z ohraničenej oblasti tváre. Pri tejto detekcii
 
 Tento pár sme skúšali vyberať viacerými spôsobmi, ako napríklad cez tzv. `levelWeights`, čož je niečo ako confidence skóre detekcie. Tento prístup nefungoval dobre na našich fotkách, preto sme po viacerých pokusoch iných prístupov nakoniec zvolili prístup, ktorý minimalizuje rozdiel pomeru vzdialenosti očí s veľkosťou tváre a manuálne zmeraným pomerom na vzorovej fotke. Nakoniec po úspešnom detekovaní tváre a dvoch očí sme otočili fotku tak, aby oči boli v rovine, upravili veľkosť výslednej fotky a pozíciu očí tak, aby boli všetky rovnaké.
 
-###Spracovanie
+### Spracovanie
 
 todo
 
-##Výsledky
+## Výsledky
 
 todo
 
-##Autori
+## Autori
 
 Michal Dokupil
 Marián Kravec
@@ -41,6 +41,6 @@ Viktória Ondrejová
 Pavlína Ružičková
 Andrej Zelinka
 
-##Zdroje
+## Zdroje
 
 * todo
