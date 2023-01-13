@@ -8,9 +8,15 @@ todo
 
 ## Popis riešenia
 
-### Načítanie dát
+### Získavanie dát
 
 * Používame knižnice [requests](https://pypi.org/project/requests/), os, [beatifulsoup4](https://pypi.org/project/beautifulsoup4/) v Pythone
+
+Náš program na získavanie dát dostane slovník obsahujúci skratku názvu katedry a url jej stránky a pre každú katedru zavolá funkciu `findPhotos` pomocou ktorej sa získavajú fotky.
+
+Funkcia `findPhotos` dostane na vstupe názov katedry, url stránky katedry a cestu k zložke do ktorej má ukladať fotky. Funkcia následne načíta obsah stránky katedry a v kóde tejto stránky následne hľadá všetky tagy <a> nachádzajúce sa v tele tagu <table> pričom vynecháva tie ktorých atribút href neobsahuje reťazec "javascript", tieto tagy obsahujú meno a url podstánky jednotlivých učiteľov a nepedagogických zamestnancov. Funkcia pre každého jedného zo zamestnancov zavolá funkciu `getImages`. Po stracovaní všetkých zamestnancov katedry do konzoly vypíše informáciu o ukončení získavania fotografii.
+
+Funkcia `getImages` dostane na vstupe meno zamestnanca, url jeho podstránky, stratku názvu katedry a cestu k zložke do ktorej má ukladať fotky. Funkcia následne načíta obsah podstránky zamestnanca a v kóde tejto stránky následne hľadá všetky tagy <img> s hodnotou atribútu alt "photo" ktorý sa nachádza v tele tagu <aside> ktorého hodnota atribútu triedy je "span3", v tomto tagu sa nachádza url fotografie daného zamestnanca. Funkcia následne načíta danú fotografiu, skontroluje či tá fotografia nie je totožná s obrázkom používaným ako placeholder pre zamestnancov ktorých fotografia sa nenachádza na serveri a v prípade, že nejde o totožnú fotografiu zloží túto fotografiu do zložky ktorej cestu dostala na vstupe s názvom tvaru "[skratka názvu katedry]_[meno zamestnanca].jpg" pričom meno zamestnanca je ešte predspracované tak, že je odstránená diakritika, medzery sú nahradene podtržníkom a sú vynechané tituly.  
 
 ### Predspracovanie
 
