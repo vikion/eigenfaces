@@ -10,7 +10,7 @@ todo
 
 ### Načítanie dát
 
-todo
+* Používame knižnice [requests](https://pypi.org/project/requests/), os, [beatifulsoup4](https://pypi.org/project/beautifulsoup4/) v Pythone
 
 ### Predspracovanie
 
