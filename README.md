@@ -32,17 +32,22 @@ Nasledovne sme detekovali oči z ohraničenej oblasti tváre. Pri tejto detekcii
 V prípade, že sa našli viac než dve oči, sme museli vybrať správny pár.
 Tento pár sme skúšali vyberať viacerými spôsobmi, ako napríklad cez tzv. `levelWeights`, čo je niečo ako confidence skóre detekcie. Tento prístup nefungoval dobre na našich fotkách, preto sme po viacerých pokusoch zvolili prístup, ktorý minimalizuje rozdiel pomeru vzdialenosti očí s veľkosťou tváre a manuálne zmeraným pomerom na vzorovej fotke. Nakoniec, po úspešnom detekovaní tváre a dvoch očí sme otočili fotku tak, aby oči boli v rovine, upravili veľkosť výslednej fotky a pozíciu očí tak, aby boli všetky rovnaké.
 
-### Spracovanie
+## Spracovanie
 
-#### PCA algoritmus
+### PCA algoritmus
+
+* Používame knižnice:
+  *  [OpenCV](https://github.com/opencv/opencv) - metódy: `imread`, `cvtColor`
+  *  [NumPy](https://numpy.org/doc/stable/index.html) - metódy: `flatter`, `reshape`, `dot`, `np.linalg.lstsq`
+  *  [Scikit-learn Datasets](https://scikit-learn.org/stable/datasets.html) - metódy: `fetch_olivetti_faces` 
 
 Program načíta 2 sady fotografii. Prvou sadou sú fotografie z datasetu [Olivetti](https://scikit-learn.org/stable/datasets/real_world.html#the-olivetti-faces-dataset) z knižnice scikit-learn ktoré využívame na natrénovanie model a druhou sadou sú nami získané fotografie zamestnancou fakulty ktoré sa snažíme klasifikovať.
 
-##### Spracovanie Olivietti fotografii a trénovanie modelu
+#### Spracovanie Olivietti fotografii a trénovanie modelu
 
-Po načítaní fotografii z datasetu Olivietti ich zvektorizujeme (zmeníme rozmer z $n \times n$ na $n^2 \times 1$) vypočítame priemernú tvár v tomto datasete, čiže sčítame všetky tváre a predelíme výsledok ich počtom, následne pre každú tvár vypočítame rozdiel od priemernej tváre, z týchto rozdiel od priemeru vytvoríme maticu $A$ ktorej stĺpce sú vektory rozdielov obrázkou od priemeru. Následne podľa postupu na stránke [GeeksForGeeks](https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/) vypočítame eigenfaces, čiže vytvoríme si maticu $C_ov = A^T A$ ktorej následne vypočítame eigenvectory $v_i$, nakoniec pomocou vzorca $u_i = A v_i$ vypočítame nami hľadané eigenfaces ktoré dáme ako stĺpce do našej matice $U$.
+Po načítaní fotografii z datasetu Olivietti ich zvektorizujeme (zmeníme rozmer z $n \times n$ na $n^2 \times 1$) vypočítame priemernú tvár v tomto datasete, čiže sčítame všetky tváre a predelíme výsledok ich počtom, následne pre každú tvár vypočítame rozdiel od priemernej tváre, z týchto rozdiel od priemeru vytvoríme maticu $A$ ktorej stĺpce sú vektory rozdielov obrázkou od priemeru. Následne podľa postupu na stránke [GeeksForGeeks](https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/) vypočítame eigenfaces, čiže vytvoríme si maticu $C_{ov} = A^T A$ ktorej následne vypočítame eigenvectory $v_i$, nakoniec pomocou vzorca $u_i = A v_i$ vypočítame nami hľadané eigenfaces ktoré dáme ako stĺpce do našej matice $U$.
 
-##### Spracovanie fotografii zamestnancou fakulty
+#### Spracovanie fotografii zamestnancou fakulty
 
 Po načítaní fotografii tvárí zamestnancou fakulty zmeníme ich kódovanie z farebného na grayscale keďže náš algoritmus nie je určený na prácu s farebnými obrázkami, tieto sivé obrázka ďalej spracovávame tak, že ich takisto ako trénovacie obrázky zvektorizujeme a od každého odpočítame priemernú tvár trénovacích obrázkou. Poslednou časťou spracovania je výpočet koeficientov jednotlivých eigenfaces pre naše fotografie tie sú výsledkou následnej rovnice $x = U w$ kde $x$ je náš rozdiel vektorizovaného obrázka od priemeru, $U$ je matica našich eigenfaces a $w$ je vektor koeficientov. Hľadaný vektor $w$ vypočítame pomocou funkcie   `np.linalg.lstsq`. Teraz keď máme vypočítanie vektory koeficientov $w$ môžeme tieto vektory použiť na analýzu podobnosti obrázkou.
 
