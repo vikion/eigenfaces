@@ -73,10 +73,10 @@ TODO
 
 ## Výsledky
 
-"Lakeť", podľa ktorého sme určili počet zhlukov:
+"Lakeť", podľa ktorého sme určili počet zhlukov:  
 ![alt text](./clusters/elbow.png)
 
-Nájdené zhluky:
+Nájdené zhluky:  
 ![alt text](./clusters/scatter.png)
 
 Tu máme zobrazenú podmnožinu nájdených zhlukov:
