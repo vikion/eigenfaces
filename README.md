@@ -73,9 +73,11 @@ Vypočítame rozdiely všetkých dvojíc tvárí, a na rozdieloch nájdeme inter
 
 ##### Zaradenie novej tváre do katedry
 
-[Skript](https://github.com/vikion/eigenfaces/blob/main/average_face_katedra.py)
+* [Skript](https://github.com/vikion/eigenfaces/blob/main/average_face_katedra.py)
 
-TODO
+Nakoniec sme vytvorili program, ktorý podľa fotky tváre nájde túkú katedru, kde sa priemer tvárí jej členov najviac zhoduje s fotkou na vstupe. 
+Najprv bolo potrebné vytvoriť priemerné tváre jednotlivých katedier. Fotografie sme si vďaka skratky katedry v názve súboru vedeli rozdeliť do polí. Následne sme si pomocou knižnice OpenCV a jej funkcie addWeighted() vytvorili jednotlivé priemery.
+Výsledný program už porovnáva fotografiu na vstupe so všetkými priemernými tvárami katedier. Výstupom je názov katedry, s ktorou má vstupná fotka najmenšiu Strednú kvadratickú chybu (Mean squared error).
 
 ## Výsledky
 
@@ -110,3 +112,4 @@ Andrej Zelinka
 * [Eyes Alignment](https://datahacker.rs/010-how-to-align-faces-with-opencv-in-python/)
 * [Prvý postup (GeeksForGeeks)](https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/)
 * [Olivetti](https://scikit-learn.org/stable/datasets/real_world.html#the-olivetti-faces-dataset)
+* [Priemer tváre](https://leslietj.github.io/2020/06/28/How-to-Average-Images-Using-OpenCV/)

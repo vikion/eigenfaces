@@ -1,9 +1,8 @@
-#https://leslietj.github.io/2020/06/28/How-to-Average-Images-Using-OpenCV/
 
 import cv2
 import numpy as np
 import os
-from matplotlib import pyplot as plt
+
 
 def compute_average():
     image_AIN = []
@@ -132,7 +131,7 @@ def compute_average():
             avg_image_KJFB = cv2.addWeighted(image_KJFB[i], alpha, avg_image_KJFB, beta, 0.0)
     cv2.imwrite('average/avg_face_KJFB.png', avg_image_KJFB)
 
-    ####KJP
+    '''####KJP - malo fotiek
     avg_image_KJP = image_KJP[0]
     for i in range(len(image_KJP)):
         if i == 0:
@@ -142,6 +141,7 @@ def compute_average():
             beta = 1.0 - alpha
             avg_image_KJP = cv2.addWeighted(image_KJP[i], alpha, avg_image_KJP, beta, 0.0)
     cv2.imwrite('average/avg_face_KJP.png', avg_image_KJP)
+    '''
 
     ####KTF
     avg_image_KTF = image_KTF[0]
@@ -166,7 +166,6 @@ def compute_average():
     cv2.imwrite('average/avg_face_MAT.png', avg_image_MAT)
 
 
-## https://www.tutorialspoint.com/how-to-compare-two-images-in-opencv-python
 def compare(input):
     input = cv2.imread(input)
     input = cv2.cvtColor(input, cv2.COLOR_BGR2GRAY)
@@ -181,7 +180,6 @@ def compare(input):
     kdmfi = cv2.imread('average/avg_face_KDMFI.png')
     kef = cv2.imread('average/avg_face_KEF.png')
     kjfb = cv2.imread('average/avg_face_KJFB.png')
-    kjp = cv2.imread('average/avg_face_KJP.png')
     ktf = cv2.imread('average/avg_face_KTF.png')
 
     ain = cv2.cvtColor(ain, cv2.COLOR_BGR2GRAY)
@@ -194,15 +192,15 @@ def compare(input):
     kef = cv2.cvtColor(kef, cv2.COLOR_BGR2GRAY)
     kjfb = cv2.cvtColor(kjfb, cv2.COLOR_BGR2GRAY)
     ktf = cv2.cvtColor(ktf, cv2.COLOR_BGR2GRAY)
-    kjp = cv2.cvtColor(kjp, cv2.COLOR_BGR2GRAY)
 
 
 
-    def error(imj, imk):
-       diff = cv2.subtract(imj, imk)
-       err = np.sum(diff**2)
-       mse = err/(float(h*w))
-       return mse
+    def error(img1, img2):
+        squared_diff = (img1 -img2) ** 2
+        summed = np.sum(squared_diff)
+        num_pix = img1.shape[0] * img1.shape[1]
+        err = summed / num_pix
+        return err
 
     score = {'AIN': error(input, ain),
              'hip': error(input, hip),
@@ -211,14 +209,13 @@ def compare(input):
              'KDMFI': error(input, kdmfi),
              'KEF': error(input, kef),
              'KJFB': error(input, kjfb),
-             'KJP': error(input, kjp),
              'KTF': error(input, ktf),
              'KTVS': error(input, ktvs),
              'MAT': error(input, mat)
              }
+    print(min(score, key= lambda x: score[x]))
 
-    print(max(score, key= lambda x: score[x]))
 #compute_average()
-compare('photos_aligned_cropped/INF_Branislav Rovan_align.jpg')
+compare('photos_aligned_cropped/AIN_Julia Pukancova_align.jpg')
 
 

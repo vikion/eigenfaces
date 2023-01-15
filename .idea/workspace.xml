@@ -2,33 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6acd16a2-6226-40bc-baf9-ef07b2c10b74" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos.csv" beforeDir="false" afterPath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/bartosovic7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/demkanin1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/dovicak1-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/haverlikova3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/horvath6.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/jaskova1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/kubincova1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/kuchar1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/kus1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/leginusova1-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/leginusova1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/madarova31.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/maslejova1-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/mokus2-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/mokus2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/nedbalek2-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/odnechtova1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/ortutay1-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/raabova1-ktvs.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/slavickova1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/tomcsanyiov1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/vankus1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/velmovska1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/wagner1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kdmfi-kjp-ktvs-turany/photos/zemanova2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/renaming.py" beforeDir="false" afterPath="$PROJECT_DIR$/renaming.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Webscrapper.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Webscrapper.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/average_face_katedra.py" beforeDir="false" afterPath="$PROJECT_DIR$/average_face_katedra.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,10 +34,11 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.renaming">
+  <component name="RunManager" selected="Python.average_face_katedra">
     <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="eigenfaces" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -75,6 +53,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="average_face_katedra" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="eigenfaces" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/average_face_katedra.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -107,10 +107,12 @@
     </configuration>
     <list>
       <item itemvalue="Python.Unnamed" />
+      <item itemvalue="Python.average_face_katedra" />
       <item itemvalue="Python.renaming" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.average_face_katedra" />
         <item itemvalue="Python.renaming" />
       </list>
     </recent_temporary>
@@ -124,6 +126,7 @@
       <option name="presentableId" value="Default" />
       <updated>1672339542076</updated>
       <workItem from="1672339543802" duration="1848000" />
+      <workItem from="1673793294998" duration="2391000" />
     </task>
     <servers />
   </component>
@@ -142,6 +145,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/eigenfaces$average_face_katedra.coverage" NAME="average_face_katedra Coverage Results" MODIFIED="1673795351439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/eigenfaces$renaming.coverage" NAME="renaming Coverage Results" MODIFIED="1672341376230" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
