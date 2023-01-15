@@ -17,10 +17,10 @@ def compute_average():
     image_KTF = []
     image_KTVS = []
     image_MAT = []
-    folder_dir = "photos_aligned_cropped-new"
+    folder_dir = "photos_aligned_cropped"
     for filename in os.listdir(folder_dir):
         # Read the input image
-        img = cv2.imread("photos_aligned_cropped-new/" + filename, 1)
+        img = cv2.imread("photos_aligned_cropped/" + filename, 1)
         if "KTVS" in filename:
             image_KTVS.append(img)
         elif "AIN" in filename:
@@ -219,6 +219,6 @@ def compare(input):
 
     print(max(score, key= lambda x: score[x]))
 #compute_average()
-compare('photos_aligned_cropped-new/INF_Branislav Rovan_align.jpg')
+compare('photos_aligned_cropped/INF_Branislav Rovan_align.jpg')
 
 
