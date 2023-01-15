@@ -57,8 +57,25 @@ S podobnosťou tvárí otestujeme porekadlo, že manžiela sa na seba podobajú.
 Vypočítame rozdiely všetkých dvojíc tvárí, a na rozdieloch nájdeme interkvartálny rozsah (IQR). Použitím vzorca  $prvý kvartil - (1.5 * iqr)$ nájdeme dolnú hranicu a použitím  $tretí kvartil + (1.5 * iqr)$ nájdeme hornú hranicu dát podobností. Predpokladáme, že dvojica ľudí sa povžuje za outliera základného súboru, ak sa nachádza mimo hraníc. Z pozorovaných "partnerov" bola jedna  dvojica outlierom nad hornou hranicou, znamenajúc, že sa podobali menej ako priemerná dvojica základného súboru. Ostatní "partneri" neprekročili hranice rozsahu. Napriek malému množstvu partnerov a nedostatočnej možnosti overenia "manželstva", by sme neformálnu hypotézu o --podobnsti našich manželských párov zamietli.  
 
 ## Výsledky
+ 
+#### Spracovanie fotografii zamestnancov fakulty
 
-todo
+Po načítaní fotografii tvárí zamestnancov fakulty zmeníme ich kódovanie z farebného na grayscale keďže náš algoritmus nie je určený na prácu s farebnými obrázkami, tieto sivé obrázka ďalej spracovávame tak, že ich takisto ako trénovacie obrázky zvektorizujeme a od každého odpočítame priemernú tvár trénovacích obrázkou. Poslednou časťou spracovania je výpočet koeficientov jednotlivých eigenfaces pre naše fotografie tie sú výsledkou následnej rovnice $x = U w$ kde $x$ je náš rozdiel vektorizovaného obrázka od priemeru, $U$ je matica našich eigenfaces a $w$ je vektor koeficientov. Hľadaný vektor $w$ vypočítame pomocou funkcie   `np.linalg.lstsq`. Teraz keď máme vypočítanie vektory koeficientov $w$ môžeme tieto vektory použiť na analýzu podobnosti obrázkou.
+
+## Výsledky
+
+![alt text](./clusters/elbow.png)
+![alt text](./clusters/scatter.png)
+
+#### Zhluk 1
+![alt text](./clusters/output1.png)
+#### Zhluk 2
+![alt text](./clusters/output2.png)
+#### Zhluk 3
+![alt text](./clusters/output3.png)
+#### Zhluk 4
+![alt text](./clusters/output4.png)
+
 
 ## Autori
 
