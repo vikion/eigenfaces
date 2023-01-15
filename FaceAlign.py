@@ -281,7 +281,7 @@ if __name__ == "__main__":
         path = DIR + f
         face = Face(path)
         img, msg = align.process(face)
-        cv2.imwrite(f"./photos_aligned/run_3layers_lastblurred33/{filename}_align.jpg", img)
+        cv2.imwrite(f"./photos_aligned_cropped_test/{filename}_align.jpg", img)
 
         if not msg or face.filename in detect_manually:
             face.eyes['left'] = face.eyes['right'] = None
@@ -298,6 +298,6 @@ if __name__ == "__main__":
             if key == ord('q'):
                 face.rotate()
                 align.center_crop(face)
-                cv2.imwrite(f"./photos_aligned/run_3layers_lastblurred33/{face.filename.strip('.jpg')}_align.jpg", face.img)
+                cv2.imwrite(f"./photos_aligned_cropped_test/{face.filename.strip('.jpg')}_align.jpg", face.img)
                 break
         cv2.destroyAllWindows()
