@@ -54,7 +54,7 @@ Na spracovanie sme skúšali viacero postupov. Prvým je postup PCA algoritmu zo
 
 ##### Spracovanie Olivetti fotografii a trénovanie modelu
 
-Po načítaní fotografií z datasetu Olivetti ich zvektorizujeme (zmeníme rozmer z $n \times n$ na $n^2 \times 1$) a vypočítame priemernú tvár v tomto datasete, čiže sčítame všetky tváre a výsledok predelíme ich počtom. Následne pre každú tvár vypočítame rozdiel od priemernej tváre, z týchto rozdielov od priemeru vytvoríme maticu $A$, ktorej stĺpce sú vektory rozdielov obrázkou od priemeru. Následne podľa postupu na stránke [GeeksForGeeks](https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/) vypočítame eigenfaces, čiže vytvoríme si maticu $C_{ov} = A^T A$, ktorej následne vypočítame eigenvectory $v_i$. Nakoniec pomocou vzorca $u_i = A v_i$ vypočítame nami hľadané eigenfaces, ktoré tvoria stĺpce našej matice $U$.
+Po načítaní fotografií z datasetu Olivetti ich zvektorizujeme (zmeníme rozmer z $n \times n$ na $n^2 \times 1$) a vypočítame priemernú tvár v tomto datasete, čiže sčítame všetky tváre a výsledok predelíme ich počtom. Následne pre každú tvár vypočítame rozdiel od priemernej tváre, z týchto rozdielov od priemeru vytvoríme maticu $A$, ktorej stĺpce sú vektory rozdielov obrázkov od priemeru. Následne podľa postupu na stránke [GeeksForGeeks](https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/) vypočítame eigenfaces, čiže vytvoríme si maticu $C_{ov} = A^T A$, ktorej následne vypočítame eigenvectory $v_i$. Nakoniec pomocou vzorca $u_i = A v_i$ vypočítame nami hľadané eigenfaces, ktoré tvoria stĺpce našej matice $U$.
 
 ##### Spracovanie fotografii zamestnancov fakulty
 
