@@ -59,6 +59,9 @@ for i in range(1,30):
     iner.append(kmeans.inertia_)
 
 
+
+
+#### couples
 last_names = []
 couples= []
 for i in names:
@@ -116,11 +119,13 @@ iqr = q3 - q1
 
 
 
-plt.scatter(vals_couple,vals_couple,c="red")
+plt.scatter(vals_couple,vals_couple,c="darkred", label = "rozdiel tvárí párov")
 y = [i for i in range(1,800)]
-plt.plot([q1 - (1.5 * iqr)]*len(y), y)
+plt.plot([q1 - (1.5 * iqr)]*len(y), y,label = "iqr dolná hranica")
 y = [i for i in range(1,800)]
-plt.plot([q3   + (1.5 * iqr)]*len(y), y)
+plt.plot([q3   + (1.5 * iqr)]*len(y), y,label = "iqr horná hranica")
+plt.title("Podobnosť párov vs IQR podobností všetkých dvojíc,\nkde 0 znamená najpodobnejšiu tvár")
+plt.legend(loc="upper left")
 plt.show()
 
 
