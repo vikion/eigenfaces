@@ -109,4 +109,6 @@ Andrej Zelinka
 
 * [Eyes Alignment](https://datahacker.rs/010-how-to-align-faces-with-opencv-in-python/)
 * [Prvý postup (GeeksForGeeks)](https://www.geeksforgeeks.org/ml-face-recognition-using-eigenfaces-pca-algorithm/)
+* Videoprednášky z University of Washington: [Eigenfaces 2](https://youtu.be/yYdYrAKghF4) a [Eigenfaces 3](https://youtu.be/SsNXg6KpLSU)
 * [Olivetti](https://scikit-learn.org/stable/datasets/real_world.html#the-olivetti-faces-dataset)
+* Obrázky učiteľov [FMFI](https://fmph.uniba.sk/pracoviska/) a obrázky učiteľov [KTVŠ](http://ktvs.fmph.uniba.sk/article_forms.php?section=9&article_id=195)
