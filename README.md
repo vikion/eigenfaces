@@ -10,6 +10,7 @@
 
 ### Získavanie dát
 
+* [Skript](https://github.com/vikion/eigenfaces/blob/main/Webscrapper.ipynb)
 * Používame knižnice [requests](https://pypi.org/project/requests/), os, [beatifulsoup4](https://pypi.org/project/beautifulsoup4/) v Pythone
 
 Náš program na získavanie dát dostane slovník obsahujúci skratku názvu katedry a url jej stránky a pre každú katedru zavolá funkciu `findPhotos` pomocou ktorej sa získavajú fotky.
@@ -20,6 +21,7 @@ Funkcia `getImages` dostane na vstupe meno zamestnanca, url jeho podstránky, st
 
 ### Predspracovanie
 
+* [Skript](https://github.com/vikion/eigenfaces/blob/main/FaceAlign.py)
 * Používame knižnicu [OpenCV](https://github.com/opencv/opencv) v Pythone
 * Triedy **`Face`**, **`FaceAlign`**
 * Metódy `crop_head`, `detect_features`, `rotate`, `center_crop`, `process`
@@ -64,10 +66,14 @@ Dáta načítavame podobne ako pri prvom postupe. Z načítaných dát vypočít
 
 #### Podobnosť párov
 
+* [Skript](https://github.com/vikion/eigenfaces/blob/main/marriage.py)
+
 S podobnosťou tvárí otestujeme porekadlo, že manžiela sa na seba podobajú. Množinu dvojíc manželských párov sme vytvorili hľadaním ľudí s rovnakým priezviskom (s koncovkou -ová pre ženy), čo samozrejme nenajde všetkých partnerov a môže nájsť pokrvných príbuzných či menovcoc, ale na otestovanie tejto hypotézy sme pracovali s touto množinou.
-Vypočítame rozdiely všetkých dvojíc tvárí, a na rozdieloch nájdeme interkvartálny rozsah (IQR). Použitím vzorca  $prvý kvartil - (1.5 * iqr)$ nájdeme dolnú hranicu a použitím  $tretí kvartil + (1.5 * iqr)$ nájdeme hornú hranicu dát podobností. Predpokladáme, že dvojica ľudí sa povžuje za outliera základného súboru, ak sa nachádza mimo hraníc. Z pozorovaných "partnerov" bola jedna  dvojica outlierom nad hornou hranicou, znamenajúc, že sa podobali menej ako priemerná dvojica základného súboru. Ostatní "partneri" neprekročili hranice rozsahu. Napriek malému množstvu partnerov a nedostatočnej možnosti overenia "manželstva", by sme neformálnu hypotézu o --podobnsti našich manželských párov zamietli.  [marriage.py](https://github.com/vikion/eigenfaces/blob/main/marriage.py)
+Vypočítame rozdiely všetkých dvojíc tvárí, a na rozdieloch nájdeme interkvartálny rozsah (IQR). Použitím vzorca  $prvý kvartil - (1.5 * iqr)$ nájdeme dolnú hranicu a použitím  $tretí kvartil + (1.5 * iqr)$ nájdeme hornú hranicu dát podobností. Predpokladáme, že dvojica ľudí sa povžuje za outliera základného súboru, ak sa nachádza mimo hraníc. Z pozorovaných "partnerov" bola jedna  dvojica outlierom nad hornou hranicou, znamenajúc, že sa podobali menej ako priemerná dvojica základného súboru. Ostatní "partneri" neprekročili hranice rozsahu. Napriek malému množstvu partnerov a nedostatočnej možnosti overenia "manželstva", by sme neformálnu hypotézu o --podobnsti našich manželských párov zamietli.
 
 #### Zaradenie novej tváre do katedry
+
+[Skript](https://github.com/vikion/eigenfaces/blob/main/average_face_katedra.py)
 
 TODO
 
